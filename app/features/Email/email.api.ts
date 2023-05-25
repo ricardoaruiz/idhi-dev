@@ -14,6 +14,7 @@ export enum EMAIL_TEMPLATE {
  * @returns 
  */
 const createEmailTransporter = (googleAccessToken: string | undefined | null) => {
+  console.log('createEmailTransporter #1 - vai criar o transporter')
   const transporter = nodemailer.createTransport({
     //@ts-ignore
     service: 'gmail',
@@ -26,9 +27,10 @@ const createEmailTransporter = (googleAccessToken: string | undefined | null) =>
       accessToken: googleAccessToken
     },
   })
+  console.log('createEmailTransporter #2 - criou o transporter')
 
   const viewDir = path.join(__dirname, '..', '/app/features/Email/templates')
-  console.info('=======viewDir============', viewDir)
+  console.log('createEmailTransporter #3 viewDir - ', viewDir)
 
   const options = {
     viewEngine : {
@@ -39,6 +41,7 @@ const createEmailTransporter = (googleAccessToken: string | undefined | null) =>
     viewPath: viewDir,
     extName: '.hbs'
   };
+  console.log('createEmailTransporter #4 options - ', options)
 
   transporter.use('compile', handlebars(options))
 
