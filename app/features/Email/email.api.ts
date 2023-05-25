@@ -4,8 +4,21 @@ import path from 'path'
 
 import { googleAuth } from '~/google.server'
 
+const TEMPLATES = {
+  FORGOT_PASSWORD: (name: string) => `
+    <html>
+      <h1>Olá ${name},</h1>
+      <p>Você está recebendo um link para a troca de sua senha</p>
+      <p>Clique 
+        <a href="www.google.com">aqui</a> 
+        para ser redirecionado
+      </p>
+    </html>
+  `
+}
+
 export enum EMAIL_TEMPLATE {
-  FORGOT_PASSWORD = 'forgot-password'
+  FORGOT_PASSWORD = 'FORGOT_PASSWORD'
 }
 
 /**
@@ -14,7 +27,6 @@ export enum EMAIL_TEMPLATE {
  * @returns 
  */
 const createEmailTransporter = (googleAccessToken: string | undefined | null) => {
-  console.log('createEmailTransporter #1 - vai criar o transporter')
   const transporter = nodemailer.createTransport({
     //@ts-ignore
     service: 'gmail',
@@ -27,10 +39,8 @@ const createEmailTransporter = (googleAccessToken: string | undefined | null) =>
       accessToken: googleAccessToken
     },
   })
-  console.log('createEmailTransporter #2 - criou o transporter')
 
   const viewDir = path.join(__dirname, '..', '/app/features/Email/templates')
-  console.log('createEmailTransporter #3 viewDir - ', viewDir)
 
   const options = {
     viewEngine : {
@@ -41,7 +51,6 @@ const createEmailTransporter = (googleAccessToken: string | undefined | null) =>
     viewPath: viewDir,
     extName: '.hbs'
   };
-  console.log('createEmailTransporter #4 options - ', options)
 
   transporter.use('compile', handlebars(options))
 
@@ -58,10 +67,7 @@ const createEmailOptions = (email: string, name: string, template: EMAIL_TEMPLAT
     from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Teste Email',
-    template,
-    context: {
-      name
-    }
+    html: TEMPLATES[template](name),
   }
 }
 

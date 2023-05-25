@@ -47,9 +47,7 @@ const sendRequestPasswordMutation = makeDomainFunction(schema)(async (data) => {
  */
 const sendChangePasswordEmail = async (name: string, email: string) => {
   try {
-    console.log('esqueci-senha.tsx-#1 - Vai mandar o email')
     await sendEmail({ name, email, template: EMAIL_TEMPLATE.FORGOT_PASSWORD })
-    console.log('esqueci-senha.tsx-#2 - Mandou o email')
 
     return json({
       error: '',
@@ -59,7 +57,6 @@ const sendChangePasswordEmail = async (name: string, email: string) => {
       }
     })
   } catch(error) {
-    console.log('esqueci-senha.tsx-#3 - Erro ao enviar o email', error)
     return json({
       error: 'Erro no envio do e-mail de solicitação de senha',
       success: '',
