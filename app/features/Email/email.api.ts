@@ -27,6 +27,7 @@ const createEmailTransporter = (googleAccessToken: string | undefined | null) =>
     },
   })
 
+  console.log('=======viewDir============', viewDir)
   const viewDir = path.join(__dirname, '..', '/app/features/Email/templates')
 
   const options = {
