@@ -57,6 +57,7 @@ const sendChangePasswordEmail = async (name: string, email: string) => {
       }
     })
   } catch(error) {
+    console.error('esqueci-senha.tsx-#1', error)
     return json({
       error: 'Erro no envio do e-mail de solicitação de senha',
       success: '',
