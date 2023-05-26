@@ -66,10 +66,24 @@ const getLoggedUser = async (request: Request) => {
 
 }
 
+/**
+ * 
+ * @param request 
+ */
+const redirectToLogged = async(request: Request) => {
+  const session = await getSession(request.headers.get(COOKIE))
+
+  if (session.has('userId')) {
+    throw redirect('/')
+  }
+
+}
+
 export { 
   getSession, 
   commitSession, 
   createSession, 
   getLoggedUser, 
-  destroySession 
+  destroySession,
+  redirectToLogged
 };

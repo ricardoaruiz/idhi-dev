@@ -1,4 +1,4 @@
-import { type ActionArgs, json } from "@remix-run/node"
+import { type ActionArgs, type LoaderArgs, json } from "@remix-run/node"
 import { Link, useActionData } from "@remix-run/react"
 
 import logo from '../images/logo.svg'
@@ -8,7 +8,7 @@ import { makeDomainFunction } from "domain-functions"
 import { Form } from "~/form"
 import { performMutation } from "remix-forms"
 import { login } from "~/features/Auth"
-import { createSession } from "~/session.server"
+import { createSession, redirectToLogged } from "~/session.server"
 
 /**
  * Form validation schema
@@ -18,6 +18,17 @@ const schema = z.object({
   email: z.string().min(1, { message: 'Informe o email'}).email({ message: 'Informe um e-mail válido'}).trim(),
   password: z.string().min(1, { message: 'Informe a senha'}).trim()
 })
+
+/**
+ * 
+ * @param param0 
+ * @returns 
+ */
+export async function loader({ request }: LoaderArgs) {
+  await redirectToLogged(request)
+  
+  return null
+};
 
 /**
  * Login function, receives data from form and validate credentials

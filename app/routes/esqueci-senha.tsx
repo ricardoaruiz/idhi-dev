@@ -1,5 +1,5 @@
 import { Link, useActionData, useNavigation } from '@remix-run/react';
-import { type ActionArgs, json } from "@remix-run/node"
+import { type ActionArgs, json, type LoaderArgs } from "@remix-run/node"
 
 import logo from '../images/logo.svg'
 import { Input, Message } from '~/components';
@@ -9,6 +9,7 @@ import { performMutation } from 'remix-forms';
 import { Form } from '~/form';
 import { getUserByEmail } from '~/features/Auth';
 import { EMAIL_TEMPLATE, sendEmail } from '~/features/Email';
+import { redirectToLogged } from '~/session.server';
 
 /**
  * Form validation schema
@@ -66,6 +67,17 @@ const sendChangePasswordEmail = async (name: string, email: string) => {
     })
   }
 }
+
+/**
+ * 
+ * @param param0 
+ * @returns 
+ */
+export async function loader({ request }: LoaderArgs) {
+  await redirectToLogged(request)
+  
+  return null
+};
 
 /**
  * Action
